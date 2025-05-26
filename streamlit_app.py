@@ -41,7 +41,7 @@ try:
             st.write(f"The search value for {fruit_chosen} is {search_on}.")
 
             # Fetch nutrition info
-            response = requests.get("https://my.fruityvice.com/api/fruit/" + fruit_chosen.lower())
+            response = requests.get("https://fruityvice.com/api/fruit/" + fruit_chosen.lower())
             if response.status_code == 200:
                 st.header(f"{fruit_chosen} Nutrition Information")
                 st.json(response.json())
