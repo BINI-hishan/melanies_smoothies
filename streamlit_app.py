@@ -16,20 +16,17 @@ if name_on_order:
 cnx = st.connection("snowflake", type="snowflake")
 session = cnx.session()
 
-# Fetch fruit options from Snowflake
+# Fetch fruit options
 try:
     my_dataframe = session.table("smoothies.public.fruit_options").select(
         col('FRUIT_NAME'), col('SEARCH_ON')
     )
     pd_df = my_dataframe.to_pandas()
 
-    # Show table of fruits (optional)
-    st.subheader("Available Fruit Options:")
-    st.dataframe(pd_df)
-
-    # Multiselect for ingredients — placed right after name input
+    # Get list of fruit names for the dropdown (but do not display the table)
     fruit_options = pd_df['FRUIT_NAME'].dropna().tolist()
 
+    # Multiselect for ingredients
     ingredients_lists = st.multiselect(
         'Choose up to 5 ingredients:',
         fruit_options,
@@ -51,7 +48,7 @@ try:
             else:
                 st.warning(f"No nutrition info found for {fruit_chosen}.")
 
-        # Submit order
+        # Insert SQL
         insert_stmt = f"""
             INSERT INTO smoothies.public.orders (ingredients, name_on_order)
             VALUES ('{ingredients_string}', '{name_on_order}')
