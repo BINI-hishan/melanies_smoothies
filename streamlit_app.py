@@ -42,12 +42,12 @@ if ingredients_lists:
             st.subheader(fruit_chosen + ' Nutrition Information')
             fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + search_on)
 
-            if fruityvice_response.status_code == 200:
-                fv_df = st.dataframe(data=fruityvice_response.json(), use_container_width=True)
-            else:
-                st.error(f"API error for {fruit_chosen}: {fruityvice_response.status_code}")
+        if fruityvice_response.status_code == 200:
+            fv_df = st.dataframe(data=fruityvice_response.json(), use_container_width=True)
+            elif fruityvice_response.status_code == 404:
+            st.warning(f"No nutrition data available for {fruit_chosen}.")
         else:
-            st.warning(f"No 'SEARCH_ON' value found for {fruit_chosen}")
+            st.error(f"API error for {fruit_chosen}: {fruityvice_response.status_code}")
 
 
     # Submit order button
