@@ -45,4 +45,8 @@ if ingredients_selected:
             st.warning(f"Could not retrieve data for {fruit}.")
 
     # Submit to Snowflake
-    if st.button('Su
+    if st.button('Submit Order'):
+        session.table("smoothies.public.orders").insert(
+            values={"ingredients": ingredients_string, "name_on_order": name_on_order}
+        )
+        st.success(f'Your Smoothie is ordered, {name_on_order}!')
