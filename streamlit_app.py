@@ -29,7 +29,6 @@ ingredients_lists = st.multiselect(
     max_selections=5
 )
 
-# If ingredients selected, display nutrition and insert option
 if ingredients_lists:
     ingredients_string = ''
 
@@ -39,8 +38,7 @@ if ingredients_lists:
         search_row = pd_df.loc[pd_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON']
 
         if not search_row.empty:
-            search_on = search_row.iloc[0].strip()
-
+            search_on = str(search_row.iloc[0]).strip()  # ✅ Fix: convert to string
             st.subheader(fruit_chosen + ' Nutrition Information')
             fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + search_on)
 
@@ -50,6 +48,7 @@ if ingredients_lists:
                 st.error(f"API error for {fruit_chosen}: {fruityvice_response.status_code}")
         else:
             st.warning(f"No 'SEARCH_ON' value found for {fruit_chosen}")
+
 
     # Submit order button
     my_insert_stmt = f"""
